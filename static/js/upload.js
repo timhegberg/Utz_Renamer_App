@@ -293,36 +293,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         xhr.responseType = 'blob';
         xhr.send(formData);
-        .then(response => {
-            if (response.ok) {
-                return response.blob();
-            }
-            return response.json().then(data => {
-                throw new Error(data.error || 'Upload failed');
-            });
-        })
-        .then(blob => {
-            // Create and trigger download
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.style.display = 'none';
-            a.href = url;
-            a.download = 'renamed_files.zip';
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url);
-            
-            // Reset form
-            form.reset();
-            fileList.innerHTML = '';
-            processingAlert.style.display = 'none';
-            submitBtn.disabled = false;
-        })
-        .catch(error => {
-            showError(error.message);
-            submitBtn.disabled = false;
-            processingAlert.style.display = 'none';
-        });
     });
 
     function showError(message) {

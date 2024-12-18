@@ -8,10 +8,30 @@ document.addEventListener('DOMContentLoaded', function() {
     const dropZone = document.getElementById('dropZone');
     const themeToggle = document.getElementById('themeToggle');
     
-    // Initialize all tooltips
+    // Initialize all tooltips and popovers
     const tooltips = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     tooltips.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+
+    const popovers = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+    popovers.map(function (popoverTriggerEl) {
+        return new bootstrap.Popover(popoverTriggerEl, {
+            trigger: 'click',
+            container: 'body'
+        });
+    });
+
+    // Close popover when clicking outside
+    document.addEventListener('click', function (e) {
+        if (!e.target.closest('[data-bs-toggle="popover"]')) {
+            popovers.forEach(function (popover) {
+                const popoverInstance = bootstrap.Popover.getInstance(popover);
+                if (popoverInstance) {
+                    popoverInstance.hide();
+                }
+            });
+        }
     });
     
     // Handle keyboard shortcuts

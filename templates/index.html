@@ -178,15 +178,41 @@
                 <div class="text-center mb-4">
                     <img src="{{ url_for('static', filename='images/utz-logo.png') }}" alt="Utz Logo" class="mb-3" style="height: 80px; transition: transform 0.3s ease;">
                     <h1>Utz Retailer Image Renaming Tool</h1>
-                    <button class="btn btn-outline-primary rounded-circle position-absolute top-0 end-0 m-4" 
-                            id="themeToggle" 
-                            aria-label="Toggle theme"
-                            data-bs-toggle="tooltip" 
-                            data-bs-placement="left" 
-                            title="Toggle theme (Ctrl + T)">
-                        <i class="bi bi-sun-fill light-mode-icon" aria-hidden="true"></i>
-                        <i class="bi bi-moon-fill dark-mode-icon" aria-hidden="true"></i>
-                    </button>
+                    <div class="position-absolute top-0 end-0 m-4 d-flex gap-2">
+                        <button class="btn btn-outline-primary rounded-circle" 
+                                id="shortcutsBtn"
+                                aria-label="Keyboard shortcuts"
+                                data-bs-toggle="popover"
+                                data-bs-placement="bottom"
+                                data-bs-html="true"
+                                data-bs-title="Keyboard Shortcuts"
+                                data-bs-content="
+                                    <div class='list-group list-group-flush'>
+                                        <div class='list-group-item d-flex justify-content-between align-items-center'>
+                                            <span>Select Files</span>
+                                            <kbd>Ctrl + U</kbd>
+                                        </div>
+                                        <div class='list-group-item d-flex justify-content-between align-items-center'>
+                                            <span>Process Files</span>
+                                            <kbd>Ctrl + Enter</kbd>
+                                        </div>
+                                        <div class='list-group-item d-flex justify-content-between align-items-center'>
+                                            <span>Toggle Theme</span>
+                                            <kbd>Ctrl + T</kbd>
+                                        </div>
+                                    </div>">
+                            <i class="bi bi-keyboard" aria-hidden="true"></i>
+                        </button>
+                        <button class="btn btn-outline-primary rounded-circle" 
+                                id="themeToggle" 
+                                aria-label="Toggle theme"
+                                data-bs-toggle="tooltip" 
+                                data-bs-placement="left" 
+                                title="Toggle theme (Ctrl + T)">
+                            <i class="bi bi-sun-fill light-mode-icon" aria-hidden="true"></i>
+                            <i class="bi bi-moon-fill dark-mode-icon" aria-hidden="true"></i>
+                        </button>
+                    </div>
                 </div>
                 <div class="card">
                     <div class="card-body">

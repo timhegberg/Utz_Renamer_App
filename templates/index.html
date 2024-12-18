@@ -75,6 +75,11 @@
             margin: 2rem auto;
             max-width: 600px;
         }
+        .upload-zone:hover,
+        .upload-zone:focus-within {
+            border-color: var(--theme-primary);
+            transform: scale(1.01);
+        }
         .upload-zone.dragover {
             border-color: var(--theme-primary);
             background: var(--theme-bg);
@@ -86,9 +91,21 @@
             font-size: 3rem;
             color: var(--theme-primary);
         }
+        .upload-zone:hover .bi,
+        .upload-zone:focus-within .bi,
         .upload-zone.dragover .bi {
             opacity: 1;
             transform: translateY(-10px);
+        }
+        img:hover {
+            transform: scale(1.05);
+        }
+        .btn {
+            transition: all 0.2s ease;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         .upload-zone .upload-prompt {
             text-align: center;
@@ -117,27 +134,25 @@
     <div class="container py-5">
         <div class="row justify-content-center">
             <div class="col-md-10">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <div class="d-flex align-items-center">
-                        <img src="{{ url_for('static', filename='images/utz-logo.png') }}" alt="Utz Logo" class="me-3" style="height: 40px;">
-                        <h1 class="mb-0">Utz Retailer Image Renaming Tool</h1>
-                    </div>
-                    <button class="btn btn-outline-primary rounded-circle" id="themeToggle">
-                        <i class="bi bi-sun-fill light-mode-icon"></i>
-                        <i class="bi bi-moon-fill dark-mode-icon"></i>
+                <div class="text-center mb-4">
+                    <img src="{{ url_for('static', filename='images/utz-logo.png') }}" alt="Utz Logo" class="mb-3" style="height: 80px; transition: transform 0.3s ease;">
+                    <h1>Utz Retailer Image Renaming Tool</h1>
+                    <button class="btn btn-outline-primary rounded-circle position-absolute top-0 end-0 m-4" id="themeToggle" aria-label="Toggle theme">
+                        <i class="bi bi-sun-fill light-mode-icon" aria-hidden="true"></i>
+                        <i class="bi bi-moon-fill dark-mode-icon" aria-hidden="true"></i>
                     </button>
                 </div>
                 <div class="card">
                     <div class="card-body">
                         <form id="uploadForm" enctype="multipart/form-data">
-                            <div class="upload-zone mb-3" id="dropZone">
+                            <div class="upload-zone mb-3" id="dropZone" tabindex="0" role="button" aria-label="Drop zone for file upload">
                                 <div class="upload-prompt text-center p-5">
-                                    <i class="bi bi-cloud-arrow-up display-1"></i>
+                                    <i class="bi bi-cloud-arrow-up display-1" aria-hidden="true"></i>
                                     <h4 class="mt-3">Drag and drop image files here</h4>
                                     <p class="text-muted">or</p>
-                                    <label for="fileInput" class="btn btn-outline-primary mb-3">
+                                    <label for="fileInput" class="btn btn-outline-primary mb-3" role="button" tabindex="0">
                                         Select Files
-                                        <input type="file" class="d-none" id="fileInput" name="files[]" multiple accept="image/*" required>
+                                        <input type="file" class="d-none" id="fileInput" name="files[]" multiple accept="image/*" required aria-label="Choose files to upload">
                                     </label>
                                     <div class="form-text">
                                         Accepted formats: PNG, JPG, JPEG, GIF<br>

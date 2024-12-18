@@ -125,6 +125,12 @@ document.addEventListener('DOMContentLoaded', function() {
             '_upc': '_upc'
         };
         
+        // Example pattern info for the user
+        if (filename.toLowerCase().startsWith('screenshot') || 
+            !filename.match(/^[0-9]+-[0-9]+-[0-9]+_(?:front|back|left|right|top|bottom|nutrition|ingredients|upc)\.[a-z]+$/i)) {
+            return 'Example: 123-456-789_front.jpg → 123456789_C1C1.jpg';
+        }
+        
         const base = filename.split('.')[0];
         const ext = filename.split('.').pop();
         
@@ -133,7 +139,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const sideMatch = base.match(/_(?:front|back|left|right|top|bottom|nutrition|ingredients|upc)$/i);
         
         if (!upcMatch || !sideMatch) {
-            return 'Invalid filename pattern';
+            return 'Example: 123-456-789_front.jpg → 123456789_C1C1.jpg';
         }
         
         const upc = upcMatch[1].replace(/-/g, '');

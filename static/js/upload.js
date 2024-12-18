@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 topRow.appendChild(sizeSpan);
                 
                 const previewRow = document.createElement('div');
-                previewRow.className = 'text-muted ms-4 position-relative preview-rename';
+                previewRow.className = 'ms-4 position-relative preview-rename';
                 
                 const arrowIcon = document.createElement('i');
                 arrowIcon.className = 'bi bi-arrow-right position-absolute start-0 ms-n4 mt-1';

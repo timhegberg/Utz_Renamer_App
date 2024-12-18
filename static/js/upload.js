@@ -234,15 +234,65 @@ document.addEventListener('DOMContentLoaded', function() {
             formData.append('files[]', file);
         });
 
-        // Show processing message
+        // Show processing message and reset progress
         processingAlert.style.display = 'block';
         errorAlert.style.display = 'none';
         submitBtn.disabled = true;
-
-        fetch('/upload', {
-            method: 'POST',
-            body: formData
-        })
+        
+        const progressBar = processingAlert.querySelector('.progress-bar');
+        progressBar.style.width = '0%';
+        progressBar.textContent = 'Starting upload...';
+        
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/upload', true);
+        
+        xhr.upload.onprogress = function(e) {
+            if (e.lengthComputable) {
+                const percentComplete = (e.loaded / e.total) * 100;
+                progressBar.style.width = percentComplete + '%';
+                progressBar.setAttribute('aria-valuenow', percentComplete);
+                progressBar.textContent = `Uploading... ${Math.round(percentComplete)}%`;
+            }
+        };
+        
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                progressBar.textContent = 'Processing files...';
+                const blob = xhr.response;
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = 'renamed_files.zip';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                
+                // Reset form
+                form.reset();
+                fileList.innerHTML = '';
+                processingAlert.style.display = 'none';
+                submitBtn.disabled = false;
+            } else {
+                try {
+                    const response = JSON.parse(xhr.responseText);
+                    showError(response.error || 'Upload failed');
+                } catch (e) {
+                    showError('Upload failed');
+                }
+                submitBtn.disabled = false;
+                processingAlert.style.display = 'none';
+            }
+        };
+        
+        xhr.onerror = function() {
+            showError('Upload failed');
+            submitBtn.disabled = false;
+            processingAlert.style.display = 'none';
+        };
+        
+        xhr.responseType = 'blob';
+        xhr.send(formData);
         .then(response => {
             if (response.ok) {
                 return response.blob();

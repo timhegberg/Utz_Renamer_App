@@ -1,0 +1,58 @@
+Create a web application where users can upload multiple image files and have them automatically renamed based on a predefined pattern—matching the logic currently found in the provided Bash script. After renaming, the application should return all files as a downloadable ZIP archive.
+
+Key Requirements:
+
+User Interface:
+
+A simple, responsive web page with a form that allows the user to:
+Upload multiple image files simultaneously.
+Submit the files for processing.
+A button or link to download the resulting ZIP file after the rename process completes.
+File Processing Logic (Server-Side):
+
+Parse each uploaded filename using the pattern from the Bash script:
+UPC code pattern: ([0-9]+-[0-9]+-[0-9]+).
+Side code pattern: (_[a-z]+).
+Remove hyphens from the UPC portion.
+Map side codes to predefined retailer codes:
+arduino
+Copy code
+"_front" → "_C1C1"
+"_back" → "_C7C1"
+"_left" → "_C2L1"
+"_right" → "_C8R1"
+"_top" → "_C3C1"
+"_bottom" → "_C9C1"
+"_nutrition" → "_L2"
+"_ingredients" → "_L4"
+"_upc" → "_upc"
+If a file’s side code is not recognized, skip renaming that file and log a warning (or handle gracefully).
+Renamed file format: <UPCWithoutHyphens><SideCode>.<extension>.
+Output:
+
+Place all successfully renamed files into a temporary folder.
+Create a ZIP archive of these renamed files.
+Present the ZIP as a downloadable link or initiate the file download directly in the user’s browser.
+Stack & Implementation Suggestions:
+
+Use a server-side framework such as Node.js with Express.
+Use multer (or an equivalent) for file uploads.
+Use a zip library (e.g., archiver in Node.js) to create the ZIP archive.
+Keep the UI minimal—just a file upload form and a submit button.
+After processing, either display a “Download” link to the ZIP file or initiate a download automatically.
+Directory and Deployment Considerations:
+
+Use a temporary folder (e.g., uploads/) for original files.
+Use another temporary folder (e.g., renamed/) for renamed files before zipping.
+If using Replit, ensure file operations and paths are compatible with the Replit environment.
+Keep code structured and documented for easy maintenance.
+Error Handling & Feedback:
+
+If a file’s name doesn’t match the required pattern, log a message and skip that file’s rename process.
+If no valid files are provided, present a clear message to the user.
+Any internal errors should log to the console, and the user should see a generic error message or no rename operation performed.
+Deliverables:
+
+Fully functioning web app hosted on Replit (or provided as a Replit project link).
+README instructions on how to run and test the app.
+Basic inline code comments explaining logic.

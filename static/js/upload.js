@@ -125,27 +125,25 @@ document.addEventListener('DOMContentLoaded', function() {
             '_upc': '_upc'
         };
         
-        // Example pattern info for the user
-        if (filename.toLowerCase().startsWith('screenshot') || 
-            !filename.match(/^[0-9]+-[0-9]+-[0-9]+_(?:front|back|left|right|top|bottom|nutrition|ingredients|upc)\.[a-z]+$/i)) {
-            return 'Example: 123-456-789_front.jpg → 123456789_C1C1.jpg';
-        }
+        // Extract potential UPC and side code from any part of the filename
+        const upcPattern = /([0-9]+-[0-9]+-[0-9]+)/;
+        const sidePattern = /_(front|back|left|right|top|bottom|nutrition|ingredients|upc)\b/i;
         
-        const base = filename.split('.')[0];
-        const ext = filename.split('.').pop();
-        
-        // Extract UPC and side code
-        const upcMatch = base.match(/^([0-9]+-[0-9]+-[0-9]+)/);
-        const sideMatch = base.match(/_(?:front|back|left|right|top|bottom|nutrition|ingredients|upc)$/i);
+        const upcMatch = filename.match(upcPattern);
+        const sideMatch = filename.match(sidePattern);
         
         if (!upcMatch || !sideMatch) {
             return 'Example: 123-456-789_front.jpg → 123456789_C1C1.jpg';
         }
         
-        const upc = upcMatch[1].replace(/-/g, '');
-        const sideCode = sideCodeMap[sideMatch[0].toLowerCase()] || '';
+        const upc = upcMatch[1];
+        const side = '_' + sideMatch[1].toLowerCase();
         
-        return `${upc}${sideCode}.${ext}`;
+        const ext = filename.split('.').pop();
+        const cleanUpc = upc.replace(/-/g, '');
+        const mappedSide = sideCodeMap[side] || '';
+        
+        return `${filename} → ${cleanUpc}${mappedSide}.${ext}`;
     }
 
     // Update file list when files are selected through the input

@@ -11,7 +11,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize all tooltips and popovers
     const tooltips = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     tooltips.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
+        return new bootstrap.Tooltip(tooltipTriggerEl, {
+            delay: { show: 1000, hide: 0 }
+        });
     });
 
     const popovers = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));

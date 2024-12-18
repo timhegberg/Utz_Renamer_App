@@ -66,17 +66,37 @@ document.addEventListener('DOMContentLoaded', function() {
             
             Array.from(files).forEach(file => {
                 const item = document.createElement('li');
-                item.className = 'list-group-item d-flex justify-content-between align-items-center';
+                item.className = 'list-group-item';
+                
+                const topRow = document.createElement('div');
+                topRow.className = 'd-flex justify-content-between align-items-center mb-2';
                 
                 const nameSpan = document.createElement('span');
+                nameSpan.className = 'fw-bold';
                 nameSpan.textContent = file.name;
                 
                 const sizeSpan = document.createElement('span');
                 sizeSpan.className = 'badge bg-secondary';
                 sizeSpan.textContent = formatFileSize(file.size);
                 
-                item.appendChild(nameSpan);
-                item.appendChild(sizeSpan);
+                topRow.appendChild(nameSpan);
+                topRow.appendChild(sizeSpan);
+                
+                const previewRow = document.createElement('div');
+                previewRow.className = 'text-muted ms-4 position-relative preview-rename';
+                
+                const arrowIcon = document.createElement('i');
+                arrowIcon.className = 'bi bi-arrow-right position-absolute start-0 ms-n4 mt-1';
+                arrowIcon.setAttribute('aria-hidden', 'true');
+                
+                const previewText = document.createElement('span');
+                previewText.textContent = generatePreviewName(file.name);
+                
+                previewRow.appendChild(arrowIcon);
+                previewRow.appendChild(previewText);
+                
+                item.appendChild(topRow);
+                item.appendChild(previewRow);
                 list.appendChild(item);
             });
             
@@ -90,6 +110,36 @@ document.addEventListener('DOMContentLoaded', function() {
         const sizes = ['Bytes', 'KB', 'MB', 'GB'];
         const i = Math.floor(Math.log(bytes) / Math.log(k));
         return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    function generatePreviewName(filename) {
+        const sideCodeMap = {
+            '_front': '_C1C1',
+            '_back': '_C7C1',
+            '_left': '_C2L1',
+            '_right': '_C8R1',
+            '_top': '_C3C1',
+            '_bottom': '_C9C1',
+            '_nutrition': '_L2',
+            '_ingredients': '_L4',
+            '_upc': '_upc'
+        };
+        
+        const base = filename.split('.')[0];
+        const ext = filename.split('.').pop();
+        
+        // Extract UPC and side code
+        const upcMatch = base.match(/^([0-9]+-[0-9]+-[0-9]+)/);
+        const sideMatch = base.match(/_(?:front|back|left|right|top|bottom|nutrition|ingredients|upc)$/i);
+        
+        if (!upcMatch || !sideMatch) {
+            return 'Invalid filename pattern';
+        }
+        
+        const upc = upcMatch[1].replace(/-/g, '');
+        const sideCode = sideCodeMap[sideMatch[0].toLowerCase()] || '';
+        
+        return `${upc}${sideCode}.${ext}`;
     }
 
     // Update file list when files are selected through the input

@@ -71,9 +71,9 @@
             transition: all 0.3s ease;
             background: transparent;
             cursor: pointer;
-            padding: 3rem 2rem;
-            margin: 2rem auto;
-            max-width: 600px;
+            padding: 2rem;
+            margin: 1.5rem auto;
+            max-width: 800px;
         }
         .upload-zone:hover,
         .upload-zone:focus-within {
@@ -115,8 +115,25 @@
             text-align: center;
             color: var(--theme-text);
         }
+        #fileList {
+            max-width: 800px;
+            margin: 0 auto;
+        }
         #fileList .list-group-item {
             animation: slideIn 0.3s ease-out;
+            background: transparent;
+            border-color: var(--theme-border);
+            margin-bottom: 0.5rem;
+            padding: 1rem;
+        }
+        .preview-rename {
+            font-size: 0.9rem;
+        }
+        .ms-n4 {
+            margin-left: -1.5rem;
+        }
+        .bi-arrow-right {
+            color: var(--theme-primary);
         }
         @keyframes slideIn {
             from {

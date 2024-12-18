@@ -27,8 +27,27 @@ def process_filename(filename):
     extension = os.path.splitext(filename)[1].lower()
     
     # Pattern for UPC code and side code
-    pattern = r'([0-9]+-[0-9]+-[0-9]+)(_[a-z]+)'
-    match = re.match(pattern, base_name)
+    upc_pattern = r'([0-9]+-[0-9]+-[0-9]+)'
+    side_pattern = r'(_(?:front|back|left|right|top|bottom|nutrition|ingredients|upc))'
+    
+    # Extract UPC code from the start of the filename
+    upc_match = re.match(upc_pattern, base_name)
+    if not upc_match:
+        logger.warning(f"No valid UPC code found in filename: {filename}")
+        return None
+        
+    # Find the last occurrence of a valid side code
+    side_matches = re.finditer(side_pattern, base_name.lower())
+    side_match = None
+    for match in side_matches:
+        side_match = match
+    
+    if not side_match:
+        logger.warning(f"No valid side code found in filename: {filename}")
+        return None
+        
+    upc_code = upc_match.group(1)
+    side_code = side_match.group(1)
     
     if not match:
         logger.warning(f"Filename {filename} does not match required pattern")

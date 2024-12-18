@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const themeToggle = document.getElementById('themeToggle');
 
     // Theme management
-    const currentTheme = localStorage.getItem('theme') || 'dark';
+    const currentTheme = localStorage.getItem('theme') || 'light';
     document.documentElement.setAttribute('data-bs-theme', currentTheme);
     
     themeToggle.addEventListener('click', () => {

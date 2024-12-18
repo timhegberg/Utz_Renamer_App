@@ -7,6 +7,33 @@ document.addEventListener('DOMContentLoaded', function() {
     const errorAlert = document.getElementById('errorAlert');
     const dropZone = document.getElementById('dropZone');
     const themeToggle = document.getElementById('themeToggle');
+    
+    // Initialize all tooltips
+    const tooltips = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltips.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+    
+    // Handle keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+        // Ctrl/Cmd + U for file upload
+        if ((e.ctrlKey || e.metaKey) && e.key === 'u') {
+            e.preventDefault();
+            fileInput.click();
+        }
+        // Ctrl/Cmd + Enter for submit
+        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+            e.preventDefault();
+            if (!submitBtn.disabled) {
+                submitBtn.click();
+            }
+        }
+        // Ctrl/Cmd + T for theme toggle
+        if ((e.ctrlKey || e.metaKey) && e.key === 't') {
+            e.preventDefault();
+            themeToggle.click();
+        }
+    });
 
     // Theme management
     const currentTheme = localStorage.getItem('theme') || 'light';

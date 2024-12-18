@@ -13,6 +13,7 @@
             --theme-danger: #CE0E2D;
             --theme-bg: #ffffff;
             --theme-border: #dee2e6;
+            --theme-text: #001B71;
         }
         
         :root[data-bs-theme="dark"] {
@@ -20,10 +21,12 @@
             --theme-danger: var(--bs-danger);
             --theme-bg: var(--bs-body-bg);
             --theme-border: var(--bs-border-color);
+            --theme-text: var(--bs-body-color);
         }
         
         body {
             background: var(--theme-bg);
+            color: var(--theme-text);
         }
         
         .light-mode-icon {
@@ -41,10 +44,22 @@
         .btn-primary {
             background-color: var(--theme-primary);
             border-color: var(--theme-primary);
+            color: var(--bs-white);
+        }
+        
+        [data-bs-theme="dark"] .btn-primary {
+            background-color: var(--bs-light);
+            border-color: var(--bs-light);
+            color: var(--theme-primary);
         }
         
         .progress-bar {
             background-color: var(--theme-danger);
+        }
+        
+        .upload-prompt h4,
+        .upload-prompt p:not(.text-muted) {
+            color: var(--theme-text);
         }
         .card {
             border: none;

@@ -27,36 +27,26 @@ def process_filename(filename):
     extension = os.path.splitext(filename)[1].lower()
     
     # Pattern for UPC code and side code
-    upc_pattern = r'([0-9]+-[0-9]+-[0-9]+)'
-    side_pattern = r'(_(?:front|back|left|right|top|bottom|nutrition|ingredients|upc))'
+    upc_pattern = r'^([0-9]+-[0-9]+-[0-9]+)'
+    side_pattern = r'(_(?:front|back|left|right|top|bottom|nutrition|ingredients|upc))(?:\.[^.]+)?$'
     
     # Extract UPC code from the start of the filename
     upc_match = re.match(upc_pattern, base_name)
     if not upc_match:
         logger.warning(f"No valid UPC code found in filename: {filename}")
         return None
-        
-    # Find the last occurrence of a valid side code
-    side_matches = re.finditer(side_pattern, base_name.lower())
-    side_match = None
-    for match in side_matches:
-        side_match = match
     
+    # Extract side code from the end of the filename
+    side_match = re.search(side_pattern, base_name.lower())
     if not side_match:
         logger.warning(f"No valid side code found in filename: {filename}")
         return None
-        
+    
     upc_code = upc_match.group(1)
     side_code = side_match.group(1)
     
-    if not match:
-        logger.warning(f"Filename {filename} does not match required pattern")
-        return None
-    
-    upc_code, side_code = match.groups()
-    
     # Check if side code is valid
-    if side_code not in SIDE_CODE_MAP:
+    if side_code.lower() not in SIDE_CODE_MAP:
         logger.warning(f"Invalid side code in filename: {filename}")
         return None
     
@@ -64,11 +54,12 @@ def process_filename(filename):
     clean_upc = upc_code.replace('-', '')
     
     # Get mapped side code
-    mapped_side_code = SIDE_CODE_MAP[side_code]
+    mapped_side_code = SIDE_CODE_MAP[side_code.lower()]
     
     # Create new filename
     new_filename = f"{clean_upc}{mapped_side_code}{extension}"
     
+    logger.debug(f"Processed {filename} to {new_filename}")
     return new_filename
 
 def process_files(file_paths, output_dir):
@@ -84,6 +75,7 @@ def process_files(file_paths, output_dir):
                 new_path = os.path.join(output_dir, new_filename)
                 shutil.copy2(file_path, new_path)
                 processed_files.append(new_path)
+                logger.info(f"Successfully processed {original_filename} to {new_filename}")
             else:
                 logger.warning(f"Skipping file: {original_filename}")
                 

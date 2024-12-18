@@ -195,6 +195,27 @@
             background-color: var(--bs-light) !important;
             color: var(--theme-primary);
         }
+        
+        /* Popover styling for keyboard shortcuts */
+        .popover {
+            --bs-popover-bg: #f8f9fa;
+            --bs-popover-header-bg: #e9ecef;
+        }
+        
+        [data-bs-theme="dark"] .popover {
+            --bs-popover-bg: #2b3035;
+            --bs-popover-header-bg: #343a40;
+            --bs-popover-header-color: #ffffff;
+        }
+        
+        .popover .list-group-item {
+            background: transparent;
+            border-color: var(--bs-border-color);
+        }
+        
+        [data-bs-theme="dark"] h1 {
+            color: var(--bs-white);
+        }
         .ms-n4 {
             margin-left: -1.5rem;
         }

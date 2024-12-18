@@ -13,7 +13,8 @@
             --theme-danger: #CE0E2D;
             --theme-bg: #ffffff;
             --theme-border: #dee2e6;
-            --theme-text: #001B71;
+            --theme-text: #212529;
+            --theme-muted: #6c757d;
         }
         
         :root[data-bs-theme="dark"] {
@@ -21,12 +22,21 @@
             --theme-danger: var(--bs-danger);
             --theme-bg: var(--bs-body-bg);
             --theme-border: var(--bs-border-color);
-            --theme-text: var(--bs-body-color);
+            --theme-text: #f8f9fa;
+            --theme-muted: #adb5bd;
         }
         
         body {
             background: var(--theme-bg);
             color: var(--theme-text);
+        }
+
+        .text-muted {
+            color: var(--theme-muted) !important;
+        }
+
+        .form-text {
+            color: var(--theme-muted) !important;
         }
         
         .light-mode-icon {
@@ -168,7 +178,7 @@
         }
         #fileList .list-group-item {
             animation: slideIn 0.3s ease-out;
-            background: transparent;
+            background: rgba(var(--bs-tertiary-bg-rgb), 0.5);
             border-color: var(--theme-border);
             margin-bottom: 0.5rem;
             padding: 1rem;
@@ -177,8 +187,13 @@
             font-size: 0.9rem;
             color: var(--theme-text);
         }
-        [data-bs-theme="light"] .preview-rename {
-            color: #001B71;
+        .badge {
+            background-color: var(--theme-primary) !important;
+            color: var(--bs-white);
+        }
+        [data-bs-theme="dark"] .badge {
+            background-color: var(--bs-light) !important;
+            color: var(--theme-primary);
         }
         .ms-n4 {
             margin-left: -1.5rem;

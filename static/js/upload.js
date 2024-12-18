@@ -6,6 +6,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const processingAlert = document.getElementById('processingAlert');
     const errorAlert = document.getElementById('errorAlert');
     const dropZone = document.getElementById('dropZone');
+    const themeToggle = document.getElementById('themeToggle');
+
+    // Theme management
+    const currentTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-bs-theme', currentTheme);
+    
+    themeToggle.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-bs-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-bs-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+    });
 
     // Prevent default drag behaviors
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {

@@ -8,8 +8,43 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <style>
+        :root[data-bs-theme="light"] {
+            --theme-primary: #001B71;
+            --theme-danger: #CE0E2D;
+            --theme-bg: #ffffff;
+            --theme-border: #dee2e6;
+        }
+        
+        :root[data-bs-theme="dark"] {
+            --theme-primary: var(--bs-primary);
+            --theme-danger: var(--bs-danger);
+            --theme-bg: var(--bs-body-bg);
+            --theme-border: var(--bs-border-color);
+        }
+        
         body {
-            background: var(--bs-body-bg);
+            background: var(--theme-bg);
+        }
+        
+        .light-mode-icon {
+            display: none;
+        }
+        
+        [data-bs-theme="dark"] .dark-mode-icon {
+            display: none;
+        }
+        
+        [data-bs-theme="dark"] .light-mode-icon {
+            display: inline;
+        }
+        
+        .btn-primary {
+            background-color: var(--theme-primary);
+            border-color: var(--theme-primary);
+        }
+        
+        .progress-bar {
+            background-color: var(--theme-danger);
         }
         .card {
             border: none;
@@ -67,7 +102,16 @@
     <div class="container py-5">
         <div class="row justify-content-center">
             <div class="col-md-10">
-                <h1 class="text-center mb-4">Image File Renaming Tool</h1>
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div class="d-flex align-items-center">
+                        <img src="{{ url_for('static', filename='images/utz-logo.png') }}" alt="Utz Logo" class="me-3" style="height: 40px;">
+                        <h1 class="mb-0">Utz Retailer Image Renaming Tool</h1>
+                    </div>
+                    <button class="btn btn-outline-primary rounded-circle" id="themeToggle">
+                        <i class="bi bi-sun-fill light-mode-icon"></i>
+                        <i class="bi bi-moon-fill dark-mode-icon"></i>
+                    </button>
+                </div>
                 <div class="card">
                     <div class="card-body">
                         <form id="uploadForm" enctype="multipart/form-data">
@@ -88,9 +132,11 @@
                                 </div>
                             </div>
                             <div id="fileList" class="mb-3"></div>
-                            <button type="submit" class="btn btn-primary" id="submitBtn">
-                                Upload and Process Files
-                            </button>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary rounded-pill px-4" id="submitBtn">
+                                    Upload and Process Files
+                                </button>
+                            </div>
                         </form>
                         <div class="alert alert-info mt-3" role="alert" id="processingAlert" style="display: none;">
                             Processing files... Please wait.

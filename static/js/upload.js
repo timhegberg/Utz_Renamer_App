@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 topRow.className = 'd-flex justify-content-between align-items-center mb-2';
                 
                 const nameSpan = document.createElement('span');
-                nameSpan.className = 'fw-bold';
+                nameSpan.className = 'fw-bold preview-rename';
                 nameSpan.textContent = file.name;
                 
                 const sizeSpan = document.createElement('span');

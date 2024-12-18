@@ -19,35 +19,55 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('theme', newTheme);
     });
 
+    let dragCounter = 0;
+
     // Prevent default drag behaviors
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
         dropZone.addEventListener(eventName, preventDefaults, false);
         document.body.addEventListener(eventName, preventDefaults, false);
     });
 
-    // Highlight drop zone when item is dragged over it
-    ['dragenter', 'dragover'].forEach(eventName => {
-        dropZone.addEventListener(eventName, highlight, false);
+    // Handle drag events on the drop zone
+    dropZone.addEventListener('dragenter', (e) => {
+        preventDefaults(e);
+        dragCounter++;
+        highlight();
     });
 
-    ['dragleave', 'drop'].forEach(eventName => {
-        dropZone.addEventListener(eventName, unhighlight, false);
+    dropZone.addEventListener('dragleave', (e) => {
+        preventDefaults(e);
+        dragCounter--;
+        if (dragCounter === 0) {
+            unhighlight();
+        }
+    });
+
+    dropZone.addEventListener('dragover', (e) => {
+        preventDefaults(e);
+        highlight();
     });
 
     // Handle dropped files
-    dropZone.addEventListener('drop', handleDrop, false);
+    dropZone.addEventListener('drop', (e) => {
+        preventDefaults(e);
+        unhighlight();
+        dragCounter = 0;
+        handleDrop(e);
+    });
 
-    function preventDefaults (e) {
+    function preventDefaults(e) {
         e.preventDefault();
         e.stopPropagation();
     }
 
-    function highlight(e) {
+    function highlight() {
         dropZone.classList.add('dragover');
+        dropZone.querySelector('.upload-prompt').classList.add('opacity-75');
     }
 
-    function unhighlight(e) {
+    function unhighlight() {
         dropZone.classList.remove('dragover');
+        dropZone.querySelector('.upload-prompt').classList.remove('opacity-75');
     }
 
     function handleDrop(e) {

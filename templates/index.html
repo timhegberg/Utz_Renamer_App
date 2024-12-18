@@ -204,6 +204,12 @@
             --bs-popover-header-color: var(--theme-primary);
         }
         
+        .popover .list-group-item {
+            background: transparent;
+            border-color: var(--theme-border);
+            color: var(--theme-primary);
+        }
+        
         [data-bs-theme="dark"] .popover {
             --bs-popover-bg: #2b3035;
             --bs-popover-header-bg: #343a40;
@@ -211,10 +217,8 @@
             --bs-popover-header-color: #ffffff;
         }
         
-        .popover .list-group-item {
-            background: transparent;
-            border-color: var(--bs-border-color);
-            color: inherit;
+        [data-bs-theme="dark"] .popover .list-group-item {
+            color: #ffffff;
         }
         
         [data-bs-theme="dark"] h1 {

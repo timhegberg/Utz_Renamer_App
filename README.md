@@ -1,6 +1,6 @@
-# 📷 ImageMagicTool
+# 📷 Utz Renamer App
 
-**ImageMagicTool** is a Flask-based web application that allows users to upload image files, process them, and download the processed files as a ZIP archive.
+**Utz Renamer App** is a Flask-based web application that allows users to upload image files, process them, and download the processed files as a ZIP archive.
 
 ---
 

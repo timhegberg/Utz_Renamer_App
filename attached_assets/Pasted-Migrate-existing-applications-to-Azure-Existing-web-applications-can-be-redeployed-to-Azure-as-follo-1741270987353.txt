@@ -1,0 +1,22 @@
+Migrate existing applications to Azure
+Existing web applications can be redeployed to Azure as follows:
+
+Source repository: Maintain your source code in a suitable repository like GitHub, which enables you to set up continuous deployment later in this process.
+
+Your requirements.txt file must be at the root of your repository for App Service to automatically install the necessary packages.
+Database: If your app depends on a database, create the necessary resources on Azure as well.
+
+App service resources: Create a resource group, App Service plan, and App Service web app to host your application. You can do this easily by running the Azure CLI command az webapp up. Or, you can create and deploy resources as shown in the Flask, Django, or FastAPI with PostgreSQL tutorial. Replace the names of the resource group, App Service plan, and web app to be more suitable for your application.
+
+Environment variables: If your application requires any environment variables, create equivalent App Service application settings. These App Service settings appear to your code as environment variables, as described in Access environment variables.
+
+Database connections, for example, are often managed through such settings, as shown in Tutorial: Deploy a Django web app with PostgreSQL - verify connection settings.
+See Production settings for Django apps for specific settings for typical Django apps.
+App startup: Review the section Container startup process later in this article to understand how App Service attempts to run your app. App Service uses the Gunicorn web server by default, which must be able to find your app object or wsgi.py folder. If you need to, you can Customize the startup command.
+
+Continuous deployment: Set up continuous deployment from GitHub Actions, Bitbucket, or Azure Repos as described in the article Continuous deployment to Azure App Service. Or, set up continuous deployment from Local Git as described in the article Local Git deployment to Azure App Service.
+
+Custom actions: To perform actions within the App Service container that hosts your app, such as Django database migrations, you can connect to the container through SSH. For an example of running Django database migrations, see Tutorial: Deploy a Django web app with PostgreSQL - generate database schema.
+
+When using continuous deployment, you can perform those actions using post-build commands as described earlier under Customize build automation.
+With these steps completed, you should be able to commit changes to your source repository and have those updates automatically deployed to App Service.

@@ -7,11 +7,18 @@ import shutil
 from utils import process_files, create_zip_archive
 
 # Configure logging
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.StreamHandler(),
+        logging.FileHandler('app.log')
+    ]
+)
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
-app.secret_key = 'your-secret-key-here'  # Required for flash messages
+app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'your-secret-key-here')  # Get from environment or use default
 
 # Configure upload settings
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
@@ -27,16 +34,16 @@ def index():
 def upload_files():
     if 'files[]' not in request.files:
         return jsonify({'error': 'No files provided'}), 400
-    
+
     files = request.files.getlist('files[]')
-    
+
     if not files or files[0].filename == '':
         return jsonify({'error': 'No files selected'}), 400
 
     # Create temporary directories
     temp_dir = tempfile.mkdtemp()
     renamed_dir = tempfile.mkdtemp()
-    
+
     try:
         # Save uploaded files to temp directory
         saved_files = []
@@ -46,19 +53,19 @@ def upload_files():
                 filepath = os.path.join(temp_dir, filename)
                 file.save(filepath)
                 saved_files.append(filepath)
-        
+
         if not saved_files:
             return jsonify({'error': 'No valid files uploaded'}), 400
 
         # Process files
         processed_files = process_files(saved_files, renamed_dir)
-        
+
         if not processed_files:
             return jsonify({'error': 'No files could be processed'}), 400
 
         # Create ZIP archive
         zip_path = create_zip_archive(processed_files, "renamed_files.zip")
-        
+
         # Send the ZIP file
         return send_file(
             zip_path,
@@ -77,4 +84,6 @@ def upload_files():
         shutil.rmtree(renamed_dir, ignore_errors=True)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    # Get port from environment variable for Azure compatibility
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
